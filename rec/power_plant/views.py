@@ -20,7 +20,6 @@ class PowerPlantListAPI(APIView):
     
 class PowerPlantAPI(APIView):
     def get(self, request, pk):
-        print(pk)
         query = PowerPlant.objects.get(pk=pk)
         serializer = PowerPlantSerializer(query)
         return Response(serializer.data)

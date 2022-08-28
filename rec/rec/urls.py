@@ -27,6 +27,9 @@ urlpatterns = [
     
     #PowerPlant
     path('powerplant/', include('power_plant.urls')),
+    
+    #Auth
+    path('account/', include('dj_rest_auth.urls')),
 ]
 
 if settings.DEBUG:

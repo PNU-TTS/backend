@@ -30,12 +30,24 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     
+    'dj_rest_auth',
+    'rest_framework.authtoken',
+    
     'user',
     'bank',
     'power_plant',
     'buyer',
     'certificate',
 ]
+
+REST_FRAMEWORK = {
+   'DEFAULT_AUTHENTICATION_CLASSES': (
+       'rest_framework.authentication.TokenAuthentication',
+   ),
+   'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+   ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

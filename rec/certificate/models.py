@@ -2,6 +2,8 @@ from django.db import models
 from power_plant.models import PowerPlant
 from user.models import User
 
+from datetime import datetime
+
 class Certificate(models.Model):
     supplier = models.ForeignKey(PowerPlant, on_delete=models.PROTECT)
     quantity = models.IntegerField()
@@ -18,9 +20,12 @@ class Transaction(models.Model):
     price = models.IntegerField()
     quantity = models.IntegerField()
     
+    registered_time = models.DateTimeField(default=datetime.now())
+    executed_time = models.DateTimeField(null=True, blank=True)
+    
     supplier = models.ForeignKey(User, on_delete=models.CASCADE, related_name='supplier_info')
     buyer = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE, related_name='buyer_info')
     
     
     def __str__(self):
-        return f"공급자: {self.target.supplier} | 가격: {self.price}원"
+        return f"{self.id}. 공급자: {self.target.supplier}"

@@ -6,7 +6,8 @@ from django.http import Http404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 # Model, Serializer import
 from .models import Certificate, Transaction
@@ -16,10 +17,14 @@ from .serializers import CertificateSerializer, TransactionSerializer
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
-# 공급자 ID 값을 기준으로 등록된 거래 내역 조회
+from datetime import datetime
+
+# 사용자가 등록한 거래 내역 조회
 @api_view(['GET'])
-def get_transaction_by_supplier(request, pk):
-    queryset = Transaction.objects.filter(supplier=pk)
+@permission_classes([IsAuthenticated])
+def get_transaction_by_supplier(request):
+    user = request.user
+    queryset = Transaction.objects.filter(supplier=user)
     serializer = TransactionSerializer(queryset, many=True)
     return Response(serializer.data)
 
@@ -46,6 +51,7 @@ def get_unapproved_transaction_list(request):
 
 # 사용자가 구매한 거래 내역 조회
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_approved_transaction_by_user(request):
     user = request.user
     
@@ -77,6 +83,7 @@ def get_approved_transaction_by_user(request):
     }
 )
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def approve_transaction(request):
     user = request.user
     
@@ -92,6 +99,7 @@ def approve_transaction(request):
         )
     else:
         transaction.buyer = user
+        transaction.executed_time = datetime.now()
         transaction.save()
         serializer = TransactionSerializer(transaction, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -100,12 +108,6 @@ def approve_transaction(request):
     
 
 class CertificateAPI(APIView):
-    # def get_object(self, pk):
-    #     try:
-    #         return Certificate.objects.get(pk=pk)
-    #     except:
-    #         raise Http404
-        
     def get(self, request):
         queryset = Certificate.objects.all()
         serializer = CertificateSerializer(queryset, many=True)
