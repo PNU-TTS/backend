@@ -4,7 +4,7 @@ from rest_framework import serializers
 from .models import Bank, BankAccount
 
 class BankSerializer(serializers.ModelSerializer):
-    class Meta:
+    class Meta: 
         model = Bank
         fields = '__all__'
 

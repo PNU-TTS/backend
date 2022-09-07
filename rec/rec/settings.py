@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'bank',
     'power_plant',
     'buyer',
-    'certificate',
 ]
 
 REST_FRAMEWORK = {
