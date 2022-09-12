@@ -27,6 +27,9 @@ urlpatterns = [
     
     #Auth
     path('account/', include('dj_rest_auth.urls')),
+    
+    #User
+    path('', include('user.urls')),
 ]
 
 if settings.DEBUG:
