@@ -12,15 +12,8 @@ from rest_framework.decorators import api_view
 from .models import PowerPlant
 from .serlializers import PowerPlantSerializer
 
-class PowerPlantListAPI(APIView):
-    def get(self, request):
-        queryset = PowerPlant.objects.all()
-        serializer = PowerPlantSerializer(queryset, many=True)
-        return Response(serializer.data)
-    
 class PowerPlantAPI(APIView):
-    def get(self, request, pk):
-        query = PowerPlant.objects.get(pk=pk)
+    def get(self, request, supplier):
+        query = PowerPlant.objects.filter(owner=supplier)[0]
         serializer = PowerPlantSerializer(query)
         return Response(serializer.data)
-        

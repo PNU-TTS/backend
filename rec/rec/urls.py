@@ -22,14 +22,14 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    #Certificate
-    path('certificate/', include('certificate.urls')),
-    
     #PowerPlant
     path('powerplant/', include('power_plant.urls')),
     
     #Auth
     path('account/', include('dj_rest_auth.urls')),
+    
+    #User
+    path('', include('user.urls')),
 ]
 
 if settings.DEBUG:
