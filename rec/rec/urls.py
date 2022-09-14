@@ -30,6 +30,9 @@ urlpatterns = [
     
     #User
     path('', include('user.urls')),
+    
+    #Buyer
+    path('buyer/', include('buyer.urls')),
 ]
 
 if settings.DEBUG:
